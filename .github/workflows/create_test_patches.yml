@@ -89,7 +89,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: patches
-          path: $HOME/template/patches/
+          path: ~/template/patches/
   
       # create a comment on the PR and any related issues with a direct link to the archive,
       # a call for testers, and perhaps a paste-able set of commands to install them 
