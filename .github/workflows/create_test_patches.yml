@@ -21,6 +21,7 @@ on:
 
 jobs:
   main:
+    name: Create patch-package Patches
     runs-on: ubuntu-latest
     steps:
       # Runs against pull_request_target so github token maintains write permissions, 
@@ -57,11 +58,18 @@ jobs:
         run: |
           PACKAGE_LIST=`find packages -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | egrep -v 'template|invites'`
           mkdir $HOME/packages
-          for PACKAGE in $PACKAGE_LIST; do pushd packages/$PACKAGE; yarn pack; mv *tgz $HOME/packages; popd; done          
+          for PACKAGE in $PACKAGE_LIST; do
+            echo "Packing PR version of package $PACKAGE"
+            pushd packages/$PACKAGE;
+            yarn pack;
+            mv *tgz $HOME/packages;
+            popd;
+          done          
           cd $HOME
           npx react-native init template
           cd template
-          for PACKAGE in ${{ steps.package-list.outputs.package-list }}; do
+          for PACKAGE in $PACKAGE_LIST; do
+            echo "Installing package $PACKAGE into fresh template app, then clobbering with PR version"
             yarn add @react-native-firebase/$PACKAGE
             pushd node_modules/@react-native-firebase
             \rm -fr $PACKAGE
@@ -72,7 +80,8 @@ jobs:
           cd $HOME/template
           yarn add patch-package --save-dev
           mkdir patches || true
-          for PACKAGE in ${{ steps.package-list.outputs.package-list }}; do
+          for PACKAGE in $PACKAGE_LIST; do
+            echo "Making patch-package patch for package $PACKAGE"
             npx patch-package @react-native-firebase/$PACKAGE
           done
         shell: bash
