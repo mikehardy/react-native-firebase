@@ -70,6 +70,8 @@ jobs:
           cd $HOME
           npx react-native init template
           cd template
+          yarn add patch-package --save-dev
+          mkdir patches || true
           for PACKAGE in $PACKAGE_LIST; do
             echo "Installing package $PACKAGE into fresh template app, then clobbering with PR version"
             yarn add @react-native-firebase/$PACKAGE
@@ -78,12 +80,6 @@ jobs:
             tar -zxf $HOME/packages/react-native-firebase-${PACKAGE}-v*
             mv package $PACKAGE
             popd
-          done
-          cd $HOME/template
-          yarn add patch-package --save-dev
-          mkdir patches || true
-          for PACKAGE in $PACKAGE_LIST; do
-            echo "Making patch-package patch for package $PACKAGE"
             npx patch-package @react-native-firebase/$PACKAGE || true
           done
           ls -la $HOME/template/patches
