@@ -53,22 +53,11 @@ jobs:
           max_attempts: 3
           command: DETOX_DISABLE_POSTINSTALL=1 yarn --no-audit --prefer-offline
 
-      - name: List and Pack Packages
-        id: package-list
+      - name: Create Patches
         run: |
           PACKAGE_LIST=`find packages -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | egrep -v 'template|invites'`
-          echo "::set-output name=packages::$PACKAGE_LIST"
           mkdir $HOME/packages
           for PACKAGE in $PACKAGE_LIST; do pushd packages/$PACKAGE; yarn pack; mv *tgz $HOME/packages; popd; done          
-
-      # Make a new react-native template app
-      # For each package:
-      #  - yarn add the package in the new template app
-      #  - move into the source package directory and yarn pack it
-      #  - move into the template node_modules, remove the package, expand the yarn pack, `mv package $PACKAGE`
-      #  - npx patch-package $PACKAGE
-      - name: Create Clean App With PR Source
-        run: |
           cd $HOME
           npx react-native init template
           cd template
@@ -80,10 +69,6 @@ jobs:
             mv package $PACKAGE
             popd
           done
-        shell: bash
-
-      - name: Create Patches
-        run: |
           cd $HOME/template
           yarn add patch-package --save-dev
           mkdir patches || true
