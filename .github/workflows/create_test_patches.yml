@@ -63,8 +63,10 @@ jobs:
             pushd packages/$PACKAGE;
             yarn pack;
             mv *tgz $HOME/packages;
+            ls -la $HOME/packages/*${PACKAGE}*
             popd;
-          done          
+          done
+          ls -la $HOME/packages/
           cd $HOME
           npx react-native init template
           cd template
@@ -73,7 +75,7 @@ jobs:
             yarn add @react-native-firebase/$PACKAGE
             pushd node_modules/@react-native-firebase
             \rm -fr $PACKAGE
-            tar -zxf $HOME/packages/*$PACKAGE*
+            tar -zxf $HOME/packages/*${PACKAGE}*
             mv package $PACKAGE
             popd
           done
@@ -84,6 +86,7 @@ jobs:
             echo "Making patch-package patch for package $PACKAGE"
             npx patch-package @react-native-firebase/$PACKAGE
           done
+          ls -la $HOME/template/patches
         shell: bash
 
       - name: Upload Test Patches
