@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+This line is just a test and should be removed.
+
 ## [7.5.4](https://github.com/invertase/react-native-firebase/compare/@react-native-firebase/database@7.5.3...@react-native-firebase/database@7.5.4) (2020-08-30)
 
 ### Bug Fixes
