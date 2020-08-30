@@ -84,7 +84,7 @@ jobs:
           mkdir patches || true
           for PACKAGE in $PACKAGE_LIST; do
             echo "Making patch-package patch for package $PACKAGE"
-            npx patch-package @react-native-firebase/$PACKAGE
+            npx patch-package @react-native-firebase/$PACKAGE || true
           done
           ls -la $HOME/template/patches
         shell: bash
