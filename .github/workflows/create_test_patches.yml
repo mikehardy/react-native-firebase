@@ -75,7 +75,7 @@ jobs:
             yarn add @react-native-firebase/$PACKAGE
             pushd node_modules/@react-native-firebase
             \rm -fr $PACKAGE
-            tar -zxf $HOME/packages/*${PACKAGE}*
+            tar -zxf $HOME/packages/react-native-firebase-${PACKAGE}-v*
             mv package $PACKAGE
             popd
           done
