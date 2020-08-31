@@ -95,5 +95,4 @@ jobs:
       # a call for testers, and perhaps a paste-able set of commands to install them 
       # (mkdir patches, curl -o etc, npx patch-package)
       - name: Post Comment with Download Link
-        run: |
-          echo ${{ toJson(github.event) }}
+        run: echo ${{ toJson(github) }}
